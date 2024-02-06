@@ -1,7 +1,10 @@
 "use client";
+
 import Image from "next/image";
 import React, { useState } from "react";
-import { SearchManufacturer } from ".";
+import { useRouter } from "next/navigation";
+
+import SearchManufacturer from "./SearchManufacturer";
 
 const SearchButton = ({ otherClasses }: { otherClasses: string }) => (
   <button type="submit" className={`-ml-3 z-10 ${otherClasses}`}>
@@ -15,14 +18,28 @@ const SearchButton = ({ otherClasses }: { otherClasses: string }) => (
   </button>
 );
 
-const SearchBar = () => {
-  const [manufacturer, setManufacturer] = useState("");
+const SearchBar = ({ setManufacturer, setModel }: any) => {
+  const [searchManufacturer, setSearchManuFacturer] = useState("");
+  const [searchModel, setSearchModel] = useState("");
+
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (searchManufacturer.trim() === "" && searchModel.trim() === "") {
+      return alert("Please provide some input");
+    }
+
+    setModel(searchModel), setManufacturer(searchManufacturer);
+  };
+
   return (
-    <form className="searchbar">
+    <form className="searchbar" onSubmit={handleSearch}>
       <div className="searchbar__item">
         <SearchManufacturer
-          manufacturer={manufacturer}
-          setManufacturer={setManufacturer}
+          selected={searchManufacturer}
+          setSelected={setSearchManuFacturer}
         />
         <SearchButton otherClasses="sm:hidden" />
       </div>
@@ -37,8 +54,8 @@ const SearchBar = () => {
         <input
           type="text"
           name="model"
-          // value={model}
-          // onChange={(e) => setModel(e.target.value)}
+          value={searchModel}
+          onChange={(e) => setSearchModel(e.target.value)}
           placeholder="Tiguan..."
           className="searchbar__input"
         />
