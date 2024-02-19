@@ -1,3 +1,4 @@
+"use client"
 import { CarProps } from "@/types";
 import React, { useState } from "react";
 import { CarDetails, CustomButton } from ".";
